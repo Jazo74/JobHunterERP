@@ -12,10 +12,10 @@ from applications import applications
 
 def menu_options():
     while True:
-        inputs = input("Please choose a number (from 0 to 4): ")
+        inputs = input("Please choose a number!")
         option = inputs
         if option == "1":
-            pass    
+            students.init()    
         elif option == "2":
             pass
         elif option == "3":
