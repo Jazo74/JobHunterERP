@@ -8,8 +8,7 @@ def import_data(filename):
     return table
         
 def export_data(table, filename, mode='a'):
-    
-    with open(table, filename, mode) as file:
+    with open(filename, mode) as file:
         if mode != "a" and mode != "w":
             raise ValueError("Wrong file opening mode")
         else:

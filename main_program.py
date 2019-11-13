@@ -3,11 +3,12 @@ The main program
 """
 import os
 import sys
-import ui
-from students import students
-from companies import companies
-from positions import positions
-from applications import applications
+from modules import ui
+from modules import ui2
+from modules import students
+from modules import companies
+from modules import positions
+from modules import applications
 
 
 def menu_options():
