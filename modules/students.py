@@ -3,33 +3,22 @@ from modules import ui
 from modules import file_handling
 
 def menu_options_students():
-    filename = "databases/students.csv"
-    message = "Please give me the student's data!"
+    file_student = "databases/students.csv"
     while True:
         inputs = input("Please choose a number! ")
         option = inputs
         if option == "1":
-            table = file_handling.import_data(filename)
-            file_handling.export_data(create_student(table), filename, "w")    
+            create_student(file_student)
         elif option == "2":
-            table = file_handling.import_data(filename)
-            id = ui.user_input(message,["ID: "])
-            read_student(table, id[0])  
+            read_student(file_student)  
         elif option == "3":
-            table = file_handling.import_data(filename)
-            read_students(table)  
+            read_students(file_student)  
         elif option == "4":
-            table = file_handling.import_data(filename)
-            file_handling.export_data(update_student(table), filename, "w")
+            update_student(file_student)
         elif option == "5":
-            table = file_handling.import_data(filename)
-            id = ui.user_input(message,["ID: "])
-            file_handling.export_data(create_student(table, id[0]), filename, "w")
+            state_student(file_student)
         elif option == "6":
-            questions = ["ID: "]
-            id = ui.user_input(message, "ID: ")
-            table = file_handling.import_data(filename)
-            file_handling.export_data(delete_student(table, id[0]), filename, "w")
+            delete_student(file_student)
         elif option == "0":
             break
         else:
@@ -44,42 +33,54 @@ def init():
         except KeyError as err:
             ui.print_message(str(err))
 
-def create_student(table):
-    message = "Please give me the student's datas!"
-    questions = ["Name: ", "Age: ", "Active(yes or no): "]
-    misc.append_record(table, ui.user_input(message, questions))
-    return table
+def create_student(filename):
+    table = file_handling.import_data(filename) #import table
+    data = ui.user_input("Please give me the student's data", ["Name: ", "Age: ", "Active?: "]) # user input
+    id = misc.generate_random(table)  # generate id
+    new_table = misc.append_table(table, misc.build_record(id, data)) # making new table
+    file_handling.export_data(new_table, filename, "w") # saving the new table
 
-def update_student(table, id, data):
-    message = "Please give me the student's ID!"
-    questions = ["ID: "]
-    id = ui.user_input(message, questions)
+def update_student(filename):
+    table = file_handling.import_data(filename) #import table
+    id = ui.user_input("Please give me the student's ID", ["ID: "]) # user input, ID
+    data = ui.user_input("Please give me the student's data", ["Name: ", "Age: ", "Active?: "]) # user input, rest info
+    new_table = misc.update_table(table, id[0], misc.build_record(id[0], data)) # updating the table
+    file_handling.export_data(new_table, filename, "w") # saving the new table
+
+def delete_student(filename):
+    table = file_handling.import_data(filename) #import table
+    id = ui.user_input("Please give me the student's ID", ["ID: "]) # user input, ID
+    for index in range(len(table)): # deleting an element from the table by index
+        if table[index][0] != id[0]:
+            del table[index]
+            break
+    file_handling.export_data(table, filename, "w")
+
+def read_students(filename):
+    table = file_handling.import_data(filename)
+    titles = ["ID", "Name", "Age", "Status"]
+    ui.print_table(table, titles)
+
+
+def read_student(filename):
+    table = file_handling.import_data(filename) # import table
+    id = ui.user_input("Please give me the student's ID",["ID: "]) # user input, ID
+    titles = ["ID", "Name", "Age", "Status"]
+    filtered_table = []
+    for record in table:
+        if record[0] == id[0]:
+            filtered_table.append(record)
+            ui.print_table(filtered_table, titles)
+
+def state_student(filename):
+    table = file_handling.import_data(filename) #import table
+    id = ui.user_input("Please give me the student's ID", ["ID: "]) # user input, ID
+    data = ui.user_input("Please give me the student's data", ["Active?: "]) # user input, Active?
     new_table = []
     for record in table:
         if record[0] != id[0]:
             new_table.append(record)
         else:
-            message = "Please give me the student's datas!"
-            questions = ["Name: ", "Age: ", "Active(yes or no): "]
-            answers = ui.user_input(message, questions)
-            new_table.append([id[0], answers[0], answers[1], answers[2]])
-    return new_table
-
-def delete_student(table, id):
-    new_table = []
-    for record in table:
-        if record[0] != id:
+            record[3] = data[0]
             new_table.append(record)
-    return new_table
-
-def read_students(table):
-    titles = ["ID", "Name", "Age", "Status"]
-    ui.print_table(table, titles)
-
-def read_student(table, id):
-    titles = ["ID", "Name", "Age", "Status"]
-    filtered_table = []
-    for record in table:
-        if record[0] == id:
-            filtered_table.append(record)
-            ui.print_table(filtered_table, titles)
+    file_handling.export_data(new_table, filename, "w") # saving the new table

@@ -4,7 +4,6 @@ The main program
 import os
 import sys
 from modules import ui
-from modules import ui2
 from modules import students
 from modules import companies
 from modules import positions
@@ -18,11 +17,11 @@ def menu_options():
         if option == "1":
             students.init()    
         elif option == "2":
-            pass
+            companies.init()
         elif option == "3":
-            pass
+            positions.init()
         elif option == "4":
-            pass
+            applications.init()
         elif option == "0":
             sys.exit(0)
         else:
