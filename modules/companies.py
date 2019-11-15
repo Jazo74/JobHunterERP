@@ -19,18 +19,16 @@ def menu_options_companys():
         elif option == "5":
             delete_company(file_company)
         elif option == "0":
-            break
-        else:
-            raise KeyError("There is no such option.")
-        break
+            return False
 
 def init():
     while True:
         ui.print_program_menu(["Create company", "Show company", "Show all companies", "Update company", "Delete company"])
         try:
-            menu_options_companys()
+            if menu_options_companys() == False:
+                break
         except KeyError as err:
-            ui.print_message(str(err))
+            ui.print_message(str(err))           
 
 def create_company(filename):
     table = file_handling.import_data(filename) #import table

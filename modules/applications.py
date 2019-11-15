@@ -16,16 +16,15 @@ def menu_options_applications():
         elif option == "3":
             delete_application(file_application)
         elif option == "0":
-            break
-        else:
-            raise KeyError("There is no such option.")
-        break
+            return False
+        
 
 def init():
     while True:
         ui.print_program_menu(["Create application", "Update application", "Delete application"])
         try:
-            menu_options_applications()
+            if menu_options_applications() == False:
+                break
         except KeyError as err:
             ui.print_message(str(err))
 

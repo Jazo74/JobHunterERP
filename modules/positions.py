@@ -21,16 +21,14 @@ def menu_options_positions():
         elif option == "6":
             delete_position(file_position)
         elif option == "0":
-            break
-        else:
-            raise KeyError("There is no such option.")
-        break
+            return False
 
 def init():
     while True:
         ui.print_program_menu(["Create position", "Show position", "Show all positions", "Update position", "Activate/Deactivate position", "Delete position"])
         try:
-            menu_options_positions()
+            if menu_options_positions() == False:
+                break
         except KeyError as err:
             ui.print_message(str(err))
 

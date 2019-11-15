@@ -21,16 +21,14 @@ def menu_options_students():
         elif option == "6":
             delete_student(file_student, file_applications)
         elif option == "0":
-            break
-        else:
-            raise KeyError("There is no such option.")
-        break
+            return False
 
 def init():
     while True:
         ui.print_program_menu(["Create Student", "Show student", "Show all students", "Update student", "Activate/Deactivate student", "Delete student"])
         try:
-            menu_options_students()
+            if menu_options_students() == False:
+                break
         except KeyError as err:
             ui.print_message(str(err))
 
