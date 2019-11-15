@@ -33,19 +33,25 @@ def create_application(filename, filename_2, filename_3):
     table = file_handling.import_data(filename) #import position table
     table_2 = file_handling.import_data(filename_2) #import company table
     table_3 = file_handling.import_data(filename_3) #import company table
-    student_list = []
+    students_list = []
     for record in table_2:
-        student_list.append(record[0])
+        students_list.append(record[0])
     positions_list = []
     for record in table_3:
         positions_list.append(record[0])
-    data = ui.user_input("Please give me the position's data", ["Description: ", "Number of seats: "]) # user input
+    data = ui.user_input("Please give me the position's data", ["Accepted: "]) # user input
     while True:
-        temp_company_id = ui.user_input("", ["Company ID: "])
-        if temp_company_id[0] in comp_list:
+        temp_student_id = ui.user_input("", ["Student ID: "])
+        if temp_student_id[0] in students_list:
             break
-        ui.print_message("Wrong ID")
-    data.append(temp_company_id[0])
+        ui.print_message("Wrong Student ID")
+    while True:
+        temp_position_id = ui.user_input("", ["Postition ID: "])
+        if temp_position_id[0] in positions_list:
+            break
+        ui.print_message("Wrong Position_ID")
+    data.append(temp_student_id[0])
+    data.append(temp_position_id[0])
     id = misc.generate_random(table)  # generate id
     new_table = misc.append_table(table, misc.build_record(id, data)) # making new table
     file_handling.export_data(new_table, filename, "w") # saving the new table
@@ -62,8 +68,8 @@ def delete_application(filename):
 
 def update_application(filename):
     table = file_handling.import_data(filename) #import table
-    id = ui.user_input("Please give me the position's ID", ["ID: "]) # user input, ID
-    data = ui.user_input("Please give me the position's data", ["Description: "]) # user input, Active?
+    id = ui.user_input("Please give me the application's ID", ["ID: "]) # user input, ID
+    data = ui.user_input("Please give me the application's data", ["Accepted: "]) # user input, Active?
     new_table = []
     for record in table:
         if record[0] != id[0]:

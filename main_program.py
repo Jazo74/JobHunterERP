@@ -12,7 +12,7 @@ from modules import applications
 
 def menu_options():
     while True:
-        inputs = input("Please choose a number!")
+        inputs = input("Please choose a number! ")
         option = inputs
         if option == "1":
             students.init()    
